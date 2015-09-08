@@ -5,3 +5,5 @@ gem 'middleman-blog', '~> 3.5.3'
 gem 'slim'
 
 gem 'middleman-livereload', group: :development
+
+gem 'middleman-gh-pages'
