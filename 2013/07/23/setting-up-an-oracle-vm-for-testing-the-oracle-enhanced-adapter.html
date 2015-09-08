@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en-US"><head><title>Charles Treatman</title><meta content="width=device-width, initial-scale=1.0" name="viewport" /><link href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" rel="stylesheet" type="text/css" /><link href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css" rel="stylesheet" type="text/css" /><link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /><link href="http://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,600italic,400,600" rel="stylesheet" type="text/css" /><link href="/stylesheets/all.css" rel="stylesheet" type="text/css" /></head><body><header class="menubar"><div class="pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading" href="/">Charles Treatman</a><ul class="social-links"><li><a class="fa fa-github" href="http://github.com/ctreatma"><span class="accessibly-hidden">github</span></a></li><li><a class="fa fa-linkedin" href="http://linkedin.com/in/charlestreatman"><span class="accessibly-hidden">linkedin</span></a></li><li><a class="fa fa-stack-overflow" href="http://stackoverflow.com/users/1106267/charles"><span class="accessibly-hidden">stack-overflow</span></a></li><li><a class="fa fa-twitter" href="http://twitter.com/ctreatma"><span class="accessibly-hidden">twitter</span></a></li></ul></div></header><div class="content-wrapper pure-g"><section class="content-main pure-u-1 pure-u-md-4-5"><article class="post"><h2>Setting up an Oracle VM for testing the Oracle Enhanced Adapter</h2><time>July 23, 2013</time><p>Oracle + Rails developers whose development machine is a Mac (myself included) have found it difficult to set up a good environment for testing the Oracle Enhanced Adapter, because Oracle no longer provides Mac installers for Oracle 11g.  It's possible to set up a virtual environment for running tests, but there isn't much documentation available to help developers set one up.  I've documented my Oracle VM setup here:</p>
+
+<ol>
+  <li>
+    <p>Install ruby &amp; rubygems (I use <a href="http://rvm.io/rvm/install">RVM</a>)</p>
+  </li>
+  <li>
+    <p>Install <a href="https://www.virtualbox.org/">virtualbox</a> &amp; <a href="http://www.vagrantup.com/">vagrant</a></p>
+  </li>
+  <li>
+    <p>Install <a href="http://git-scm.com/book/en/Getting-Started-Installing-Git">git</a></p>
+  </li>
+  <li>
+    <p>Clone <a href="https://github.com/hilverd">Hilverd Reker's</a> Oracle Vagrant project:</p>
+
+    <pre><code> git clone https://github.com/hilverd/vagrant-ubuntu-oracle-xe.git
+</code></pre>
+
+    <ol>
+      <li>
+        <p>This project uses Puppet for provisioning, so install that</p>
+
+        <pre><code> gem install puppet
+</code></pre>
+      </li>
+      <li>
+        <p>You also need to install the <a href="https://github.com/dotless-de/vagrant-vbguest">vbguest</a> Vagrant plugin</p>
+
+        <pre><code> vagrant plugin install vagrant-vbguest
+</code></pre>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Download <a href="http://www.oracle.com/technetwork/products/express-edition/downloads/index.html">Oracle XE 11g</a> and put the file in vagrant-ubuntu-oracle-xe/modules/oracle/files/</p>
+  </li>
+  <li>
+    <p>Install <a href="http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html">Oracle Instant Client</a></p>
+  </li>
+  <li>
+    <p>Run <code>vagrant up</code></p>
+  </li>
+</ol>
+
+<p>Now you have an Oracle 11g instance to use for testing.  To set up your VM &amp; environment to run oracle_enhanced_adapter tests:</p>
+
+<ol>
+  <li>
+    <p>Create the test user/schema as described in the <a href="https://github.com/rsim/oracle-enhanced/blob/master/RUNNING_TESTS.md#running-tests">testing readme</a></p>
+  </li>
+  <li>
+    <p>Set environment variables so the test suite knows how to connect to the database</p>
+
+    <pre><code> export DATABASE_NAME='XE'
+ export DATABASE_HOST='localhost'
+ export DATABASE_PORT='1521'
+ export DATABASE_SYS_PASSWORD='manager'
+</code></pre>
+  </li>
+  <li>
+    <p>Run <code>rake spec</code></p>
+  </li>
+</ol>
+</article></section></div><script>var _gaq=[['_setAccount','UA-41733257-1'],['_trackPageview']];
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+   s.parentNode.insertBefore(g,s)}(document,'script'));</script></body></html>
